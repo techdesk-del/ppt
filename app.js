@@ -138,26 +138,23 @@ function initControls() {
         stage.addEventListener('pointerup', stopDrag);
         stage.addEventListener('pointercancel', stopDrag);
 
-        // 2. MOUSE WHEEL VERTICAL SCROLL (Up/Down) & Ctrl+Zoom
+        // 2. DIRECT MOUSE WHEEL SCROLL -> SMOOTH ZOOM IN & ZOOM OUT
         stage.addEventListener('wheel', (e) => {
             e.preventDefault();
-            if (e.ctrlKey) {
-                if (e.deltaY < 0) setZoomLevel(Math.min(2.5, currentZoom + 0.15));
-                else setZoomLevel(Math.max(0.8, currentZoom - 0.15));
-            } else {
-                panY -= e.deltaY * 0.9;
-                panX -= e.deltaX * 0.9;
-                applyMapTransform();
-            }
+            
+            // Calculate zoom delta (Up = Zoom In, Down = Zoom Out)
+            const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
+            const newZoom = Math.min(4.0, Math.max(0.6, currentZoom * zoomFactor));
+            
+            setZoomLevel(newZoom);
         }, { passive: false });
 
-        // Double click reset
+        // Double click to reset position & zoom
         stage.addEventListener('dblclick', (e) => {
             if (e.target.closest('.floating-control-center') || e.target.closest('.top-hud')) return;
             panX = 0;
             panY = 0;
-            currentZoom = 1.0;
-            applyMapTransform();
+            setZoomLevel(1.0);
         });
     }
 
