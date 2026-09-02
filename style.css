@@ -197,12 +197,12 @@ html, body {
 
 .map-world {
     position: relative;
-    max-width: 100%;
-    max-height: 100%;
     aspect-ratio: 1024 / 571;
-    width: auto;
-    height: 100%;
-    border-radius: 14px;
+    /* Strict dual-axis aspect ratio lock: fits portrait, landscape, mobile & desktop perfectly */
+    width: min(100%, calc((100vh - 120px) * (1024 / 571)));
+    height: auto;
+    max-height: 100%;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.1);
     transform-origin: center center;
@@ -219,7 +219,7 @@ html, body {
 .world-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: fill; /* 100% congruent with SVG viewBox 0 0 1024 571 */
     display: block;
     filter: brightness(0.95) contrast(1.1);
     pointer-events: none;
