@@ -9,34 +9,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="fullscreen-body">
+<body class="app-layout">
 
-    <!-- TOP FLOATING HUD RIBBON -->
-    <div class="top-hud">
-        <div class="hud-left">
-            <div class="hud-badge pulse">● LIVE GPS ROUTE MOTION</div>
-            <div class="hud-title-wrap">
-                <h1 class="hud-main-title">JAIPUR COMPLETE CORRIDOR ACCESS STUDY</h1>
-                <span class="hud-sub-coord">📍 26°44'10.69"N, 75°52'21.88"E | Jaipur Ring Road (148C / Toll Rd)</span>
+    <!-- TOP FIXED APP HEADER (OUTSIDE MAP) -->
+    <header class="app-header">
+        <div class="hdr-left">
+            <div class="hdr-badge pulse">● LIVE GPS MOTION</div>
+            <div class="hdr-title-wrap">
+                <h1 class="hdr-main-title">JAIPUR COMPLETE CORRIDOR ACCESS ANALYSIS</h1>
+                <span class="hdr-sub-coord">📍 26°44'10.69"N, 75°52'21.88"E | Jaipur Ring Road (148C / Toll Rd)</span>
             </div>
         </div>
 
-        <div class="hud-center-telemetry">
+        <div class="hdr-center-telemetry">
             <div class="telemetry-pill">
-                <span class="pill-label">COMPASS HEADING</span>
+                <span class="pill-label">COMPASS</span>
                 <span class="pill-val" id="telemetry-heading">155° SSE</span>
             </div>
             <div class="telemetry-pill">
-                <span class="pill-label">CORRIDOR DISTANCE</span>
+                <span class="pill-label">DISTANCE</span>
                 <span class="pill-val" id="telemetry-dist">0.00 / 1.45 km</span>
             </div>
             <div class="telemetry-pill">
                 <span class="pill-label">MOUSE CONTROLS</span>
-                <span class="pill-val active-mode">🔍 Wheel: Zoom In/Out | 🖐️ Drag: Pan</span>
+                <span class="pill-val active-mode">🔍 Wheel: Zoom | 🖐️ Drag: Pan</span>
             </div>
         </div>
 
-        <div class="hud-right-actions">
+        <div class="hdr-right-actions">
             <button id="toggle-labels-btn" class="hud-btn" title="Toggle Landmark Labels On/Off (L)">
                 <span class="btn-icon">🏷️</span>
                 <span class="btn-text">Show Labels</span>
@@ -49,160 +49,166 @@
                 ⛶
             </button>
         </div>
-    </div>
+    </header>
 
-    <!-- MAIN VIEWPORT: SINGLE COMPLETE MAP STAGE -->
-    <main class="slide-deck-fullscreen">
-        <section class="slide-fullscreen active" id="slide-1">
-            <div class="cinematic-stage" id="stage-single">
+    <!-- MAIN MAP VIEWPORT: 100% PURE & ZERO FLOATING OVERLAYS -->
+    <main class="map-viewport-container">
+        <div class="cinematic-stage" id="stage-single">
+            
+            <div class="map-world" id="single-map-world">
+                <!-- Clean Base Map with Zero Ghost Drag -->
+                <img src="assets/clean_single_complete_route.jpg" class="world-image" id="single-map-img" alt="Jaipur Complete Site Satellite Map" draggable="false" ondragstart="return false;">
                 
-                <div class="map-world" id="single-map-world">
-                    <!-- Clean Base Map with Zero Ghost Drag -->
-                    <img src="assets/clean_single_complete_route.jpg" class="world-image" id="single-map-img" alt="Jaipur Complete Site Satellite Map" draggable="false" ondragstart="return false;">
+                <!-- Exact SVG Overlay: ALL Segments Active & Seamlessly Connected at Pin -->
+                <svg class="world-svg-overlay" viewBox="0 0 1024 571" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="neonGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00FF66" />
+                            <stop offset="60%" stop-color="#10B981" />
+                            <stop offset="100%" stop-color="#00E5FF" />
+                        </linearGradient>
+                        <filter id="laserGlow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="3" result="blur1"/>
+                            <feGaussianBlur stdDeviation="6" result="blur2"/>
+                            <feMerge>
+                                <feMergeNode in="blur2"/>
+                                <feMergeNode in="blur1"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- 1. North Arm to Mathurawala (Animated Glow & Line) -->
+                    <path id="path-north-glow" class="laser-glow-track" 
+                          d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
+                    <path id="path-north-line" class="laser-active-track secondary-flow" 
+                          d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
+
+                    <!-- 2. Lower Branch to Ring Road (Animated Glow & Line) -->
+                    <path id="path-lower-branch-glow" class="laser-glow-track" 
+                          d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
+                    <path id="path-lower-branch-line" class="laser-active-track secondary-flow" 
+                          d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
+
+                    <!-- 3. Lower Roundabout Loop (Animated Glow & Line) -->
+                    <path id="path-lower-loop-glow" class="laser-glow-track" 
+                          d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
+                    <path id="path-lower-loop-line" class="laser-active-track secondary-flow" 
+                          d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
+
+                    <!-- 4. PRIMARY SEAMLESS UNIFIED ROAD TRACK -->
+                    <path id="path-main-glow" class="laser-glow-track primary-glow" 
+                          d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
                     
-                    <!-- Exact SVG Overlay: ALL Segments Active & Seamlessly Connected at Pin -->
-                    <svg class="world-svg-overlay" viewBox="0 0 1024 571" preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="neonGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#00FF66" />
-                                <stop offset="60%" stop-color="#10B981" />
-                                <stop offset="100%" stop-color="#00E5FF" />
-                            </linearGradient>
-                            <filter id="laserGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="4" result="blur1"/>
-                                <feGaussianBlur stdDeviation="8" result="blur2"/>
-                                <feMerge>
-                                    <feMergeNode in="blur2"/>
-                                    <feMergeNode in="blur1"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
+                    <path id="path-main-line" class="laser-active-track primary-flow" 
+                          d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
 
-                        <!-- 1. North Arm to Mathurawala (Animated Glow & Line) -->
-                        <path id="path-north-glow" class="laser-glow-track" 
-                              d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
-                        <path id="path-north-line" class="laser-active-track secondary-flow" 
-                              d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
+                    <!-- Seamless Junction Glow Dot at Untitled Placemark -->
+                    <circle cx="445" cy="208" r="5" fill="#00FF66" filter="url(#laserGlow)" opacity="0.9" />
+                    <circle cx="445" cy="208" r="2.5" fill="#FFF" />
 
-                        <!-- 2. Lower Branch to Ring Road (Animated Glow & Line) -->
-                        <path id="path-lower-branch-glow" class="laser-glow-track" 
-                              d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
-                        <path id="path-lower-branch-line" class="laser-active-track secondary-flow" 
-                              d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
+                    <!-- Minimalist Clean Circular Moving Pointer (No Triangles) -->
+                    <g id="single-drone-node" transform="translate(259, 192)">
+                        <circle class="drone-pulse-ring" r="14" />
+                        <circle class="drone-head" r="5" />
+                    </g>
+                </svg>
 
-                        <!-- 3. Lower Roundabout Loop (Animated Glow & Line) -->
-                        <path id="path-lower-loop-glow" class="laser-glow-track" 
-                              d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
-                        <path id="path-lower-loop-line" class="laser-active-track secondary-flow" 
-                              d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
-
-                        <!-- 4. PRIMARY SEAMLESS UNIFIED ROAD TRACK (Zero Cut at Untitled Placemark Pin) -->
-                        <path id="path-main-glow" class="laser-glow-track primary-glow" 
-                              d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
-                        
-                        <path id="path-main-line" class="laser-active-track primary-flow" 
-                              d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
-
-                        <!-- Seamless Junction Glow Dot at Untitled Placemark -->
-                        <circle cx="445" cy="208" r="6" fill="#00FF66" filter="url(#laserGlow)" opacity="0.9" />
-                        <circle cx="445" cy="208" r="3" fill="#FFF" />
-
-                        <!-- Minimalist Clean Circular Moving Pointer (No Triangles) -->
-                        <g id="single-drone-node" transform="translate(259, 192)">
-                            <circle class="drone-pulse-ring" r="14" />
-                            <circle class="drone-head" r="5" />
-                        </g>
-                    </svg>
-
-                    <!-- Spatial Landmark Callouts Layer (Togglable via L key) -->
-                    <div id="landmarks-layer" class="landmarks-layer hidden">
-                        <div class="spatial-callout" style="top: 34%; left: 25%;">
-                            <div class="callout-badge green">
-                                <span class="badge-icon">🛣️</span>
-                                <span class="badge-title">HIGHWAY INGRESS</span>
-                            </div>
+                <!-- Spatial Landmark Callouts Layer (Togglable via L key) -->
+                <div id="landmarks-layer" class="landmarks-layer hidden">
+                    <div class="spatial-callout" style="top: 34%; left: 25%;">
+                        <div class="callout-badge green">
+                            <span class="badge-icon">🛣️</span>
+                            <span class="badge-title">HIGHWAY INGRESS</span>
                         </div>
+                    </div>
 
-                        <div class="spatial-callout" style="top: 8%; left: 44%;">
-                            <div class="callout-badge cyan">
-                                <span class="badge-icon">🏘️</span>
-                                <span class="badge-title">MATHURAWALA</span>
-                            </div>
+                    <div class="spatial-callout" style="top: 8%; left: 44%;">
+                        <div class="callout-badge cyan">
+                            <span class="badge-icon">🏘️</span>
+                            <span class="badge-title">MATHURAWALA</span>
                         </div>
+                    </div>
 
-                        <div class="spatial-callout" style="top: 38%; left: 45%;">
-                            <div class="callout-badge orange">
-                                <span class="badge-icon">📍</span>
-                                <span class="badge-title">UNTITLED PLACEMARK</span>
-                            </div>
-                            <span class="callout-coord">26°44'10.69"N, 75°52'21.88"E</span>
+                    <div class="spatial-callout" style="top: 38%; left: 45%;">
+                        <div class="callout-badge orange">
+                            <span class="badge-icon">📍</span>
+                            <span class="badge-title">UNTITLED PLACEMARK</span>
                         </div>
+                        <span class="callout-coord">26°44'10.69"N, 75°52'21.88"E</span>
+                    </div>
 
-                        <div class="spatial-callout" style="top: 45%; left: 23%;">
-                            <div class="callout-badge">
-                                <span class="badge-icon">🏛️</span>
-                                <span class="badge-title">SARAL BIHARI TEMPLE</span>
-                            </div>
+                    <div class="spatial-callout" style="top: 45%; left: 23%;">
+                        <div class="callout-badge">
+                            <span class="badge-icon">🏛️</span>
+                            <span class="badge-title">SARAL BIHARI TEMPLE</span>
                         </div>
+                    </div>
 
-                        <div class="spatial-callout" style="bottom: 4%; left: 44%;">
-                            <div class="callout-badge gold">
-                                <span class="badge-icon">🛣️</span>
-                                <span class="badge-title">JAIPUR RING RD (148C / TOLL ROAD)</span>
-                            </div>
+                    <div class="spatial-callout" style="bottom: 4%; left: 44%;">
+                        <div class="callout-badge gold">
+                            <span class="badge-icon">🛣️</span>
+                            <span class="badge-title">JAIPUR RING RD (148C / TOLL ROAD)</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Floating Bottom Video Control Center -->
-                <div class="floating-control-center">
-                    <div class="control-row-main">
-                        <button id="play-pause-btn" class="ctrl-action-btn primary">
-                            <span class="action-icon">▶</span>
-                            <span class="action-text">PLAY REAL-TIME MOTION</span>
-                        </button>
-                        <button id="replay-btn" class="ctrl-action-btn">
-                            <span class="action-icon">↺</span>
-                            <span>REPLAY</span>
-                        </button>
-                        
-                        <div class="speed-selector">
-                            <span class="speed-title">SPEED:</span>
-                            <button class="sp-btn active" data-sp="1">1x</button>
-                            <button class="sp-btn" data-sp="2">2x</button>
-                            <button class="sp-btn" data-sp="4">4x</button>
-                        </div>
-
-                        <div class="zoom-selector">
-                            <span class="zoom-title">ZOOM:</span>
-                            <button class="zm-btn active" data-zoom="1.0">1.0x (Full)</button>
-                            <button class="zm-btn" data-zoom="1.25">1.25x</button>
-                            <button class="zm-btn icon-btn" id="zoom-out-btn" title="Zoom Out (-)">🔍-</button>
-                            <button class="zm-btn icon-btn" id="zoom-in-btn" title="Zoom In (+)">🔍+</button>
-                        </div>
-
-                        <div class="milestone-stepper">
-                            <button class="ms-btn" onclick="seekToMilestone(0)">Highway Start</button>
-                            <button class="ms-btn" onclick="seekToMilestone(1)">Untitled Pin</button>
-                            <button class="ms-btn" onclick="seekToMilestone(2)">South Corridor</button>
-                            <button class="ms-btn" onclick="seekToMilestone(3)">Jaipur Ring Rd</button>
-                        </div>
-                    </div>
-
-                    <!-- Progress Scrubber Bar -->
-                    <div class="scrubber-bar-wrap">
-                        <span class="scrub-label" id="current-point-label">📍 Ingress from West Highway...</span>
-                        <div class="scrubber-track" id="scrubber-track">
-                            <div class="scrubber-fill" id="scrubber-fill"></div>
-                        </div>
-                        <span class="scrub-pct" id="scrub-pct">0%</span>
-                    </div>
-                </div>
-
             </div>
-        </section>
+
+        </div>
     </main>
+
+    <!-- FIXED APPLICATION FOOTER BAR (COMPLETELY OUTSIDE MAP - ZERO OVERLAP) -->
+    <footer class="app-footer-dock">
+        <div class="dock-inner">
+            
+            <!-- Playback Controls -->
+            <div class="dock-playback-group">
+                <button id="play-pause-btn" class="dock-btn primary">
+                    <span class="action-icon">▶</span>
+                    <span class="action-text">PLAY MOTION</span>
+                </button>
+                <button id="replay-btn" class="dock-btn" title="Replay Motion">
+                    <span class="action-icon">↺</span>
+                    <span>REPLAY</span>
+                </button>
+            </div>
+
+            <!-- Milestone Quick Navigation -->
+            <div class="dock-milestones-group">
+                <button class="ms-chip" onclick="seekToMilestone(0)">Highway Start</button>
+                <button class="ms-chip" onclick="seekToMilestone(1)">Placemark Pin</button>
+                <button class="ms-chip" onclick="seekToMilestone(2)">South Corridor</button>
+                <button class="ms-chip" onclick="seekToMilestone(3)">Jaipur Ring Rd</button>
+            </div>
+
+            <!-- Live Progress Scrubber Bar -->
+            <div class="dock-scrubber-group">
+                <span class="scrub-label" id="current-point-label">📍 Ingress from West Highway...</span>
+                <div class="scrubber-track" id="scrubber-track">
+                    <div class="scrubber-fill" id="scrubber-fill"></div>
+                </div>
+                <span class="scrub-pct" id="scrub-pct">0%</span>
+            </div>
+
+            <!-- Speed & Zoom Controls -->
+            <div class="dock-tools-group">
+                <div class="pill-btn-group">
+                    <span class="group-label">SPEED:</span>
+                    <button class="sp-btn active" data-sp="1">1x</button>
+                    <button class="sp-btn" data-sp="2">2x</button>
+                    <button class="sp-btn" data-sp="4">4x</button>
+                </div>
+
+                <div class="pill-btn-group">
+                    <span class="group-label">ZOOM:</span>
+                    <button class="zm-btn icon-btn" id="zoom-out-btn" title="Zoom Out (-)">🔍-</button>
+                    <button class="zm-btn active" data-zoom="1.0">1x</button>
+                    <button class="zm-btn icon-btn" id="zoom-in-btn" title="Zoom In (+)">🔍+</button>
+                </div>
+            </div>
+
+        </div>
+    </footer>
 
     <script src="app.js"></script>
 </body>
