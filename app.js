@@ -149,9 +149,41 @@ function initControls() {
             setZoomLevel(newZoom);
         }, { passive: false });
 
-        // Double click to reset position & zoom
+        // 3. MOBILE & TABLET 2-FINGER PINCH-TO-ZOOM
+        let initialPinchDist = null;
+        let initialZoom = 1.0;
+
+        stage.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                initialPinchDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialZoom = currentZoom;
+            }
+        }, { passive: true });
+
+        stage.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initialPinchDist) {
+                const currentDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                const factor = currentDist / initialPinchDist;
+                const newZoom = Math.min(4.0, Math.max(0.6, initialZoom * factor));
+                setZoomLevel(newZoom);
+            }
+        }, { passive: true });
+
+        stage.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initialPinchDist = null;
+            }
+        }, { passive: true });
+
+        // Double click/tap to reset position & zoom
         stage.addEventListener('dblclick', (e) => {
-            if (e.target.closest('.floating-control-center') || e.target.closest('.top-hud')) return;
+            if (e.target.closest('.app-footer-dock') || e.target.closest('.app-header')) return;
             panX = 0;
             panY = 0;
             setZoomLevel(1.0);

@@ -528,3 +528,155 @@ html, body {
     font-size: 11px;
     padding: 3px 6px;
 }
+
+/* =========================================================================
+   COMPREHENSIVE MOBILE & TABLET RESPONSIVE SYSTEM (ALL DEVICES)
+   ========================================================================= */
+
+/* TABLETS (Max-width: 1024px) */
+@media (max-width: 1024px) {
+    .hdr-center-telemetry .telemetry-pill:last-child {
+        display: none; /* Hide mouse controls on touch devices */
+    }
+    .dock-milestones-group {
+        display: none; /* Keep dock compact */
+    }
+    .dock-scrubber-group {
+        max-width: 300px;
+    }
+}
+
+/* MOBILE LANDSCAPE & PHONES (Max-width: 768px) */
+@media (max-width: 768px) {
+    .app-header {
+        height: 52px;
+        padding: 0 12px;
+    }
+    
+    .hdr-badge {
+        font-size: 8px;
+        padding: 4px 6px;
+    }
+    
+    .hdr-main-title {
+        font-size: 11px;
+        letter-spacing: 0.2px;
+    }
+    
+    .hdr-sub-coord {
+        font-size: 9px;
+    }
+
+    .hdr-center-telemetry {
+        display: none; /* Free up header space on mobile */
+    }
+
+    .hud-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+
+    .hud-btn .btn-text {
+        display: none; /* Icon-only buttons for mobile header */
+    }
+
+    .hud-btn .btn-icon {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .cinematic-stage {
+        padding: 8px;
+    }
+
+    .map-world {
+        border-radius: 8px;
+    }
+
+    /* 2-Row Mobile Touch Dock */
+    .app-footer-dock {
+        height: auto;
+        min-height: 56px;
+        padding: 8px 12px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .dock-inner {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: space-between;
+    }
+
+    .dock-playback-group {
+        order: 1;
+        gap: 6px;
+    }
+
+    .dock-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+
+    .dock-tools-group {
+        order: 2;
+        gap: 6px;
+    }
+
+    .dock-scrubber-group {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 2px;
+    }
+
+    .scrub-label {
+        max-width: 100px;
+        font-size: 9px;
+    }
+
+    .pill-btn-group {
+        padding: 2px 4px;
+    }
+
+    .sp-btn, .zm-btn {
+        padding: 3px 6px;
+        font-size: 9px;
+    }
+}
+
+/* ULTRA-COMPACT SMARTPHONES (Max-width: 480px) */
+@media (max-width: 480px) {
+    .app-header {
+        height: 48px;
+        padding: 0 8px;
+    }
+
+    .hdr-left {
+        gap: 8px;
+    }
+
+    .hdr-main-title {
+        font-size: 10px;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hdr-sub-coord {
+        font-size: 8px;
+    }
+
+    .dock-btn .action-text {
+        display: none; /* Icon-only Play button on micro screens */
+    }
+
+    .dock-btn {
+        padding: 6px 8px;
+    }
+
+    .pill-btn-group .group-label {
+        display: none;
+    }
+}
+
