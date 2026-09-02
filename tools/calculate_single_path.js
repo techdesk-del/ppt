@@ -13,7 +13,7 @@ const orangePixels = [];
 for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
         const idx = (y * width + x) * 4;
-        if (isOrange(data[idx], data[idx+1], data[idx+2])) {
+        if (isOrange(data[idx], data[idx + 1], data[idx + 2])) {
             orangePixels.push({ x, y });
         }
     }

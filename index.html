@@ -20,18 +20,18 @@
             <div class="hdr-badge pulse">● LIVE GPS MOTION</div>
             <div class="hdr-title-wrap">
                 <h1 class="hdr-main-title">JAIPUR COMPLETE CORRIDOR ACCESS ANALYSIS</h1>
-                <span class="hdr-sub-coord">📍 26°44'10.69"N, 75°52'21.88"E | Jaipur Ring Road (148C / Toll Rd)</span>
+                <span class="hdr-sub-coord">📍 26°44'10.69"N, 75°52'21.88"E | Saral Bihari Corridor & Interchange</span>
             </div>
         </div>
 
         <div class="hdr-center-telemetry">
             <div class="telemetry-pill">
                 <span class="pill-label">COMPASS</span>
-                <span class="pill-val" id="telemetry-heading">155° SSE</span>
+                <span class="pill-val" id="telemetry-heading">250° WSW</span>
             </div>
             <div class="telemetry-pill">
                 <span class="pill-label">DISTANCE</span>
-                <span class="pill-val" id="telemetry-dist">0.00 / 1.45 km</span>
+                <span class="pill-val" id="telemetry-dist">0.00 / 1.62 km</span>
             </div>
             <div class="telemetry-pill">
                 <span class="pill-label">MOUSE CONTROLS</span>
@@ -62,8 +62,8 @@
                 <!-- Clean Base Map with Zero Ghost Drag -->
                 <img src="assets/clean_single_complete_route.jpg" class="world-image" id="single-map-img" alt="Jaipur Complete Site Satellite Map" draggable="false" ondragstart="return false;">
                 
-                <!-- Exact SVG Overlay: ALL Segments Active & Seamlessly Connected at Pin -->
-                <svg class="world-svg-overlay" viewBox="0 0 1024 571" preserveAspectRatio="none">
+                <!-- Exact SVG Overlay matching 1024 x 393 aspect ratio -->
+                <svg class="world-svg-overlay" viewBox="0 0 1024 393" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id="neonGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#00FF66" />
@@ -79,39 +79,60 @@
                                 <feMergeNode in="SourceGraphic"/>
                             </feMerge>
                         </filter>
+                        <marker id="arrowHeadGreen" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                            <path d="M 1 1 L 7 4 L 1 7 Z" fill="#00FF66" />
+                        </marker>
                     </defs>
 
-                    <!-- 1. North Arm to Mathurawala (Animated Glow & Line) -->
-                    <path id="path-north-glow" class="laser-glow-track" 
-                          d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
-                    <path id="path-north-line" class="laser-active-track secondary-flow" 
-                          d="M 445 198 L 435 170 L 428 140 L 422 110 L 405 75 L 430 70 L 438 36" />
+                    <!-- 1. Top Highway Continuing Westbound Past Saral Bihari Temple -->
+                    <path id="path-hwy-west-glow" class="laser-glow-track" 
+                          d="M 773 50 L 758 54 L 743 56 L 728 59 L 713 62 L 698 64 L 683 67 L 668 70 L 640 76 L 608 80" />
+                    <path id="path-hwy-west-line" class="laser-active-track secondary-flow" 
+                          d="M 773 50 L 758 54 L 743 56 L 728 59 L 713 62 L 698 64 L 683 67 L 668 70 L 640 76 L 608 80" marker-end="url(#arrowHeadGreen)" />
 
-                    <!-- 2. Lower Branch to Ring Road (Animated Glow & Line) -->
-                    <path id="path-lower-branch-glow" class="laser-glow-track" 
-                          d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
-                    <path id="path-lower-branch-line" class="laser-active-track secondary-flow" 
-                          d="M 545 452 L 470 460 L 490 485 L 515 505 L 545 512 L 560 512" />
+                    <!-- 2. South-East Corridor to Navchetna School (Animated Glow & Line) -->
+                    <path id="path-se-glow" class="laser-glow-track" 
+                          d="M 662 272 L 674 277 L 686 288 L 698 283 L 710 284 L 722 288 L 734 292 L 746 293 L 758 297 L 770 300 L 782 302 L 794 309 L 806 312 L 818 314 L 830 319 L 842 322 L 854 326 L 866 325 L 878 319 L 881 326 L 885 334 L 887 342 L 889 350 L 886 358 L 887 366 L 889 374 L 894 382 L 891 390" />
+                    <path id="path-se-line" class="laser-active-track secondary-flow" 
+                          d="M 662 272 L 674 277 L 686 288 L 698 283 L 710 284 L 722 288 L 734 292 L 746 293 L 758 297 L 770 300 L 782 302 L 794 309 L 806 312 L 818 314 L 830 319 L 842 322 L 854 326 L 866 325 L 878 319 L 881 326 L 885 334 L 887 342 L 889 350 L 886 358 L 887 366 L 889 374 L 894 382 L 891 390" />
 
-                    <!-- 3. Lower Roundabout Loop (Animated Glow & Line) -->
-                    <path id="path-lower-loop-glow" class="laser-glow-track" 
-                          d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
-                    <path id="path-lower-loop-line" class="laser-active-track secondary-flow" 
-                          d="M 535 490 L 555 495 L 560 515 L 545 530 L 525 525 L 520 505 L 535 490" />
+                    <!-- 3. Interchange Balaji Temple North-East Flyover -->
+                    <path id="path-flyover-ne-glow" class="laser-glow-track" 
+                          d="M 140 160 L 190 95 L 232 48 L 248 28" />
+                    <path id="path-flyover-ne-line" class="laser-active-track secondary-flow" 
+                          d="M 140 160 L 190 95 L 232 48 L 248 28" marker-end="url(#arrowHeadGreen)" />
 
-                    <!-- 4. PRIMARY SEAMLESS UNIFIED ROAD TRACK -->
+                    <!-- 4. Interchange Cloverleaf Ramp North-West Exit -->
+                    <path id="path-ramp-nw-glow" class="laser-glow-track" 
+                          d="M 135 140 L 80 105 L 45 92 L 12 82" />
+                    <path id="path-ramp-nw-line" class="laser-active-track secondary-flow" 
+                          d="M 135 140 L 80 105 L 45 92 L 12 82" marker-end="url(#arrowHeadGreen)" />
+
+                    <!-- 5. Interchange Flyover South-West Exit -->
+                    <path id="path-flyover-sw-glow" class="laser-glow-track" 
+                          d="M 140 165 L 95 225 L 58 268 L 46 278" />
+                    <path id="path-flyover-sw-line" class="laser-active-track secondary-flow" 
+                          d="M 140 165 L 95 225 L 58 268 L 46 278" marker-end="url(#arrowHeadGreen)" />
+
+                    <!-- 6. PRIMARY SEAMLESS ROUTE TRACK (Top Highway -> Colony -> Placemark -> West Link) -->
                     <path id="path-main-glow" class="laser-glow-track primary-glow" 
-                          d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
+                          d="M 838 42 L 828 43 L 818 45 L 808 48 L 798 49 L 788 50 L 778 51 L 773 50 L 773 58 L 774 66 L 778 74 L 780 82 L 783 90 L 785 98 L 787 106 L 790 114 L 792 122 L 793 130 L 795 138 L 794 146 L 796 149 L 788 152 L 780 154 L 772 155 L 764 156 L 756 158 L 748 159 L 740 161 L 732 162 L 724 164 L 718 163 L 715 171 L 711 179 L 706 187 L 703 195 L 698 203 L 694 211 L 691 219 L 685 227 L 683 235 L 678 243 L 674 251 L 670 259 L 664 267 L 662 273 L 660 271 L 648 271 L 636 267 L 624 267 L 612 266 L 600 264 L 588 262 L 576 259 L 564 260 L 552 259 L 540 252 L 528 248 L 516 255 L 504 252 L 492 251 L 480 251 L 468 244 L 456 243 L 444 241 L 432 241 L 420 239 L 408 241 L 396 240 L 384 239 L 372 237 L 360 237 L 348 234 L 336 232 L 324 231 L 312 229 L 300 229 L 288 236 L 276 225 L 264 223 L 252 222 L 240 220 L 228 219 L 216 218 L 204 227 L 192 225 L 180 231" />
                     
                     <path id="path-main-line" class="laser-active-track primary-flow" 
-                          d="M 259 192 L 275 178 L 295 162 L 318 148 L 335 168 L 350 195 L 380 196 L 410 197 L 445 198 L 445 218 L 460 236 L 466 254 L 472 272 L 480 290 L 486 308 L 494 326 L 504 344 L 512 362 L 517 380 L 524 398 L 531 416 L 539 434 L 545 452 L 550 470 L 555 488 L 560 506 L 565 524 L 568 546" />
+                          d="M 838 42 L 828 43 L 818 45 L 808 48 L 798 49 L 788 50 L 778 51 L 773 50 L 773 58 L 774 66 L 778 74 L 780 82 L 783 90 L 785 98 L 787 106 L 790 114 L 792 122 L 793 130 L 795 138 L 794 146 L 796 149 L 788 152 L 780 154 L 772 155 L 764 156 L 756 158 L 748 159 L 740 161 L 732 162 L 724 164 L 718 163 L 715 171 L 711 179 L 706 187 L 703 195 L 698 203 L 694 211 L 691 219 L 685 227 L 683 235 L 678 243 L 674 251 L 670 259 L 664 267 L 662 273 L 660 271 L 648 271 L 636 267 L 624 267 L 612 266 L 600 264 L 588 262 L 576 259 L 564 260 L 552 259 L 540 252 L 528 248 L 516 255 L 504 252 L 492 251 L 480 251 L 468 244 L 456 243 L 444 241 L 432 241 L 420 239 L 408 241 L 396 240 L 384 239 L 372 237 L 360 237 L 348 234 L 336 232 L 324 231 L 312 229 L 300 229 L 288 236 L 276 225 L 264 223 L 252 222 L 240 220 L 228 219 L 216 218 L 204 227 L 192 225 L 180 231" />
 
-                    <!-- Seamless Junction Glow Dot at Untitled Placemark -->
-                    <circle cx="445" cy="208" r="5" fill="#00FF66" filter="url(#laserGlow)" opacity="0.9" />
-                    <circle cx="445" cy="208" r="2.5" fill="#FFF" />
+                    <!-- Junction Glow Dots -->
+                    <circle cx="773" cy="50" r="4.5" fill="#00FF66" filter="url(#laserGlow)" opacity="0.9" />
+                    <circle cx="773" cy="50" r="2" fill="#FFF" />
 
-                    <!-- Minimalist Clean Circular Moving Pointer (No Triangles) -->
-                    <g id="single-drone-node" transform="translate(259, 192)">
+                    <circle cx="662" cy="273" r="4.5" fill="#00FF66" filter="url(#laserGlow)" opacity="0.9" />
+                    <circle cx="662" cy="273" r="2" fill="#FFF" />
+
+                    <circle cx="600" cy="264" r="5" fill="#00E5FF" filter="url(#laserGlow)" opacity="0.9" />
+                    <circle cx="600" cy="264" r="2.5" fill="#FFF" />
+
+                    <!-- Minimalist Clean Circular Moving Pointer -->
+                    <g id="single-drone-node" transform="translate(838, 42)">
                         <circle class="drone-pulse-ring" r="14" />
                         <circle class="drone-head" r="5" />
                     </g>
@@ -119,21 +140,21 @@
 
                 <!-- Spatial Landmark Callouts Layer (Togglable via L key) -->
                 <div id="landmarks-layer" class="landmarks-layer hidden">
-                    <div class="spatial-callout" style="top: 34%; left: 25%;">
-                        <div class="callout-badge green">
-                            <span class="badge-icon">🛣️</span>
-                            <span class="badge-title">HIGHWAY INGRESS</span>
-                        </div>
-                    </div>
-
-                    <div class="spatial-callout" style="top: 8%; left: 44%;">
+                    <div class="spatial-callout" style="top: 7.6%; left: 23.0%;">
                         <div class="callout-badge cyan">
-                            <span class="badge-icon">🏘️</span>
-                            <span class="badge-title">MATHURAWALA</span>
+                            <span class="badge-icon">🏛️</span>
+                            <span class="badge-title">BALAJI TEMPLE, BAINADA KI DHANI</span>
                         </div>
                     </div>
 
-                    <div class="spatial-callout" style="top: 38%; left: 45%;">
+                    <div class="spatial-callout" style="top: 21.4%; left: 52.7%;">
+                        <div class="callout-badge">
+                            <span class="badge-icon">🏛️</span>
+                            <span class="badge-title">SARAL BIHARI TEMPLE</span>
+                        </div>
+                    </div>
+
+                    <div class="spatial-callout" style="top: 60.5%; left: 58.9%;">
                         <div class="callout-badge orange">
                             <span class="badge-icon">📍</span>
                             <span class="badge-title">UNTITLED PLACEMARK</span>
@@ -141,17 +162,10 @@
                         <span class="callout-coord">26°44'10.69"N, 75°52'21.88"E</span>
                     </div>
 
-                    <div class="spatial-callout" style="top: 45%; left: 23%;">
-                        <div class="callout-badge">
-                            <span class="badge-icon">🏛️</span>
-                            <span class="badge-title">SARAL BIHARI TEMPLE</span>
-                        </div>
-                    </div>
-
-                    <div class="spatial-callout" style="bottom: 4%; left: 44%;">
+                    <div class="spatial-callout" style="top: 76.3%; left: 87.5%;">
                         <div class="callout-badge gold">
-                            <span class="badge-icon">🛣️</span>
-                            <span class="badge-title">JAIPUR RING RD (148C / TOLL ROAD)</span>
+                            <span class="badge-icon">🏫</span>
+                            <span class="badge-title">NAVCHETNA MANSIK AVM MOOK BADHIR SCHOOL</span>
                         </div>
                     </div>
                 </div>
@@ -179,14 +193,14 @@
             <!-- Milestone Quick Navigation -->
             <div class="dock-milestones-group">
                 <button class="ms-chip" onclick="seekToMilestone(0)">Highway Start</button>
-                <button class="ms-chip" onclick="seekToMilestone(1)">Placemark Pin</button>
-                <button class="ms-chip" onclick="seekToMilestone(2)">South Corridor</button>
-                <button class="ms-chip" onclick="seekToMilestone(3)">Jaipur Ring Rd</button>
+                <button class="ms-chip" onclick="seekToMilestone(1)">Colony Ingress</button>
+                <button class="ms-chip" onclick="seekToMilestone(2)">Placemark Pin</button>
+                <button class="ms-chip" onclick="seekToMilestone(3)">West Terminal</button>
             </div>
 
             <!-- Live Progress Scrubber Bar -->
             <div class="dock-scrubber-group">
-                <span class="scrub-label" id="current-point-label">📍 Ingress from West Highway...</span>
+                <span class="scrub-label" id="current-point-label">📍 Highway Access (Saral Bihari Corridor)...</span>
                 <div class="scrubber-track" id="scrubber-track">
                     <div class="scrubber-fill" id="scrubber-fill"></div>
                 </div>

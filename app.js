@@ -9,12 +9,16 @@ let currentZoom = 1.0;
 // Path elements
 let pathMainLine = null;
 let pathMainGlow = null;
-let pathNorthLine = null;
-let pathNorthGlow = null;
-let pathLowerBranchLine = null;
-let pathLowerBranchGlow = null;
-let pathLowerLoopLine = null;
-let pathLowerLoopGlow = null;
+let pathHwyWestLine = null;
+let pathHwyWestGlow = null;
+let pathSeLine = null;
+let pathSeGlow = null;
+let pathFlyoverNeLine = null;
+let pathFlyoverNeGlow = null;
+let pathRampNwLine = null;
+let pathRampNwGlow = null;
+let pathFlyoverSwLine = null;
+let pathFlyoverSwGlow = null;
 
 let singleDroneNode = null;
 let singleMapWorld = null;
@@ -27,38 +31,38 @@ let panX = 0, panY = 0;
 const milestones = [
     {
         progress: 0.0,
-        name: "West Highway Ingress",
-        heading: "045° NE",
-        action: "DEPART WEST ARTERIAL HIGHWAY",
-        sub: "Connecting into residential/commercial sector grid",
-        speed: "40 km/h",
+        name: "Top Highway Access (Saral Bihari Corridor)",
+        heading: "250° WSW",
+        action: "DEPART ARTERIAL HIGHWAY CORRIDOR",
+        sub: "Direct access near Saral Bihari Temple",
+        speed: "45 km/h",
         icon: "🛣️"
     },
     {
-        progress: 0.38,
-        name: "Untitled Placemark (Origin Pin)",
-        heading: "155° SSE",
-        action: "REACH UNTITLED PLACEMARK PIN",
-        sub: "Coordinates: 26°44'10.69\"N, 75°52'21.88\"E",
+        progress: 0.22,
+        name: "Sector Ingress & Internal Grid",
+        heading: "170° S",
+        action: "ENTERING INTERNAL SECTOR ROAD NETWORK",
+        sub: "Connecting into planned colony infrastructure",
         speed: "35 km/h",
+        icon: "🏘️"
+    },
+    {
+        progress: 0.50,
+        name: "Untitled Placemark (Origin Pin)",
+        heading: "260° W",
+        action: "PASSING UNTITLED PLACEMARK PIN",
+        sub: "Coordinates: 26°44'10.69\"N, 75°52'21.88\"E",
+        speed: "40 km/h",
         icon: "📍"
     },
     {
-        progress: 0.70,
-        name: "Southbound Main Corridor",
-        heading: "155° SSE",
-        action: "TRAVERSING SOUTH ARTERIAL LINK",
-        sub: "Passing Manpur Nagalya & Prahladpura sector",
-        speed: "55 km/h",
-        icon: "⬇️"
-    },
-    {
         progress: 1.0,
-        name: "Jaipur Ring Road (148C / Toll Rd)",
-        heading: "160° SSE",
-        action: "ARRIVE AT JAIPUR RING ROAD JUNCTION",
-        sub: "Final high-speed toll expressway interchange",
-        speed: "60 km/h",
+        name: "West Arterial Link & Terminal",
+        heading: "265° W",
+        action: "ARRIVE AT WEST INTERCHANGE JUNCTION",
+        sub: "Connecting to Balaji Temple & Western Ring Road link",
+        speed: "55 km/h",
         icon: "🏁"
     }
 ];
@@ -74,12 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function initElements() {
     pathMainLine = document.getElementById('path-main-line');
     pathMainGlow = document.getElementById('path-main-glow');
-    pathNorthLine = document.getElementById('path-north-line');
-    pathNorthGlow = document.getElementById('path-north-glow');
-    pathLowerBranchLine = document.getElementById('path-lower-branch-line');
-    pathLowerBranchGlow = document.getElementById('path-lower-branch-glow');
-    pathLowerLoopLine = document.getElementById('path-lower-loop-line');
-    pathLowerLoopGlow = document.getElementById('path-lower-loop-glow');
+    pathHwyWestLine = document.getElementById('path-hwy-west-line');
+    pathHwyWestGlow = document.getElementById('path-hwy-west-glow');
+    pathSeLine = document.getElementById('path-se-line');
+    pathSeGlow = document.getElementById('path-se-glow');
+    pathFlyoverNeLine = document.getElementById('path-flyover-ne-line');
+    pathFlyoverNeGlow = document.getElementById('path-flyover-ne-glow');
+    pathRampNwLine = document.getElementById('path-ramp-nw-line');
+    pathRampNwGlow = document.getElementById('path-ramp-nw-glow');
+    pathFlyoverSwLine = document.getElementById('path-flyover-sw-line');
+    pathFlyoverSwGlow = document.getElementById('path-flyover-sw-glow');
 
     singleDroneNode = document.getElementById('single-drone-node');
     singleMapWorld = document.getElementById('single-map-world');
@@ -87,9 +95,11 @@ function initElements() {
     // Initialize all SVG path dasharrays
     const paths = [
         pathMainLine, pathMainGlow,
-        pathNorthLine, pathNorthGlow,
-        pathLowerBranchLine, pathLowerBranchGlow,
-        pathLowerLoopLine, pathLowerLoopGlow
+        pathHwyWestLine, pathHwyWestGlow,
+        pathSeLine, pathSeGlow,
+        pathFlyoverNeLine, pathFlyoverNeGlow,
+        pathRampNwLine, pathRampNwGlow,
+        pathFlyoverSwLine, pathFlyoverSwGlow
     ];
 
     paths.forEach(p => {
@@ -111,7 +121,7 @@ function initControls() {
     // 1. BUTTER-SMOOTH ZERO-GLITCH POINTER DRAG & PANNING
     if (stage) {
         stage.addEventListener('pointerdown', (e) => {
-            if (e.target.closest('.floating-control-center') || e.target.closest('.top-hud')) return;
+            if (e.target.closest('.floating-control-center') || e.target.closest('.app-footer-dock') || e.target.closest('.app-header')) return;
             isDragging = true;
             startX = e.clientX - panX;
             startY = e.clientY - panY;
@@ -141,11 +151,8 @@ function initControls() {
         // 2. DIRECT MOUSE WHEEL SCROLL -> SMOOTH ZOOM IN & ZOOM OUT
         stage.addEventListener('wheel', (e) => {
             e.preventDefault();
-            
-            // Calculate zoom delta (Up = Zoom In, Down = Zoom Out)
             const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
             const newZoom = Math.min(4.0, Math.max(0.6, currentZoom * zoomFactor));
-            
             setZoomLevel(newZoom);
         }, { passive: false });
 
@@ -370,67 +377,73 @@ function renderMotionState(prog) {
     const lenMain = pathMainLine.getTotalLength();
     const currentLen = lenMain * prog;
 
-    // 1. Draw Primary Seamless Highway-to-RingRoad Line (Zero Cut at Pin)
+    // 1. Draw Primary Track (Top Highway -> Colony -> Placemark -> West Link)
     pathMainLine.style.strokeDashoffset = lenMain * (1 - prog);
     if (pathMainGlow) pathMainGlow.style.strokeDashoffset = lenMain * (1 - prog);
 
-    // 2. Animate North Arm (Mathurawala) simultaneously when reaching placemark
-    if (pathNorthLine && pathNorthGlow) {
-        const lenNorth = pathNorthLine.getTotalLength();
-        if (prog > 0.35) {
-            const northProg = Math.min((prog - 0.35) / 0.35, 1);
-            pathNorthLine.style.strokeDashoffset = lenNorth * (1 - northProg);
-            pathNorthGlow.style.strokeDashoffset = lenNorth * (1 - northProg);
+    // 2. Animate Highway West Extension when departing junction
+    if (pathHwyWestLine && pathHwyWestGlow) {
+        const lenHwyW = pathHwyWestLine.getTotalLength();
+        if (prog > 0.08) {
+            const hwyProg = Math.min((prog - 0.08) / 0.3, 1);
+            pathHwyWestLine.style.strokeDashoffset = lenHwyW * (1 - hwyProg);
+            pathHwyWestGlow.style.strokeDashoffset = lenHwyW * (1 - hwyProg);
         } else {
-            pathNorthLine.style.strokeDashoffset = lenNorth;
-            pathNorthGlow.style.strokeDashoffset = lenNorth;
+            pathHwyWestLine.style.strokeDashoffset = lenHwyW;
+            pathHwyWestGlow.style.strokeDashoffset = lenHwyW;
         }
     }
 
-    // 3. Animate Lower Branch & Loop when approaching Ring Road
-    if (pathLowerBranchLine && pathLowerBranchGlow) {
-        const lenBranch = pathLowerBranchLine.getTotalLength();
-        if (prog > 0.65) {
-            const branchProg = Math.min((prog - 0.65) / 0.35, 1);
-            pathLowerBranchLine.style.strokeDashoffset = lenBranch * (1 - branchProg);
-            pathLowerBranchGlow.style.strokeDashoffset = lenBranch * (1 - branchProg);
+    // 3. Animate South-East Branch to Navchetna School when passing central junction
+    if (pathSeLine && pathSeGlow) {
+        const lenSe = pathSeLine.getTotalLength();
+        if (prog > 0.45) {
+            const seProg = Math.min((prog - 0.45) / 0.4, 1);
+            pathSeLine.style.strokeDashoffset = lenSe * (1 - seProg);
+            pathSeGlow.style.strokeDashoffset = lenSe * (1 - seProg);
         } else {
-            pathLowerBranchLine.style.strokeDashoffset = lenBranch;
-            pathLowerBranchGlow.style.strokeDashoffset = lenBranch;
+            pathSeLine.style.strokeDashoffset = lenSe;
+            pathSeGlow.style.strokeDashoffset = lenSe;
         }
     }
 
-    if (pathLowerLoopLine && pathLowerLoopGlow) {
-        const lenLoop = pathLowerLoopLine.getTotalLength();
-        if (prog > 0.75) {
-            const loopProg = Math.min((prog - 0.75) / 0.25, 1);
-            pathLowerLoopLine.style.strokeDashoffset = lenLoop * (1 - loopProg);
-            pathLowerLoopGlow.style.strokeDashoffset = lenLoop * (1 - loopProg);
-        } else {
-            pathLowerLoopLine.style.strokeDashoffset = lenLoop;
-            pathLowerLoopGlow.style.strokeDashoffset = lenLoop;
-        }
-    }
+    // 4. Animate Interchange Flyovers & Ramps
+    const interchangePaths = [
+        { line: pathFlyoverNeLine, glow: pathFlyoverNeGlow, startProg: 0.1 },
+        { line: pathRampNwLine, glow: pathRampNwGlow, startProg: 0.2 },
+        { line: pathFlyoverSwLine, glow: pathFlyoverSwGlow, startProg: 0.3 }
+    ];
 
-    // 4. Vehicle Head Position along Main Track (Clean Circular Bead)
+    interchangePaths.forEach(item => {
+        if (item.line && item.glow) {
+            const len = item.line.getTotalLength();
+            if (prog > item.startProg) {
+                const subProg = Math.min((prog - item.startProg) / 0.4, 1);
+                item.line.style.strokeDashoffset = len * (1 - subProg);
+                item.glow.style.strokeDashoffset = len * (1 - subProg);
+            } else {
+                item.line.style.strokeDashoffset = len;
+                item.glow.style.strokeDashoffset = len;
+            }
+        }
+    });
+
+    // 5. Moving Pointer Position along Main Track
     const dronePt = pathMainLine.getPointAtLength(currentLen);
     if (singleDroneNode) {
         singleDroneNode.setAttribute('transform', `translate(${dronePt.x}, ${dronePt.y})`);
     }
 
-    // 5. Telemetry Updates
+    // 6. Telemetry Updates
     const scrubberFill = document.getElementById('scrubber-fill');
     const scrubPct = document.getElementById('scrub-pct');
     const telemetryDist = document.getElementById('telemetry-dist');
-    const navDistRem = document.getElementById('nav-dist-rem');
 
     if (scrubberFill) scrubberFill.style.width = `${prog * 100}%`;
     if (scrubPct) scrubPct.textContent = `${Math.round(prog * 100)}%`;
 
-    const distTraveled = (prog * 1.45).toFixed(2);
-    const distRemain = ((1 - prog) * 1450).toFixed(0);
-    if (telemetryDist) telemetryDist.textContent = `${distTraveled} / 1.45 km`;
-    if (navDistRem) navDistRem.textContent = `${distRemain} m`;
+    const distTraveled = (prog * 1.62).toFixed(2);
+    if (telemetryDist) telemetryDist.textContent = `${distTraveled} / 1.62 km`;
 
     updateActiveMilestone(prog);
 }

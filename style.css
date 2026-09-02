@@ -197,9 +197,9 @@ html, body {
 
 .map-world {
     position: relative;
-    aspect-ratio: 1024 / 571;
+    aspect-ratio: 1024 / 393;
     /* Strict dual-axis aspect ratio lock: fits portrait, landscape, mobile & desktop perfectly */
-    width: min(100%, calc((100vh - 120px) * (1024 / 571)));
+    width: min(100%, calc((100vh - 120px) * (1024 / 393)));
     height: auto;
     max-height: 100%;
     border-radius: 12px;

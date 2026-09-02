@@ -2,77 +2,96 @@ const pptxgen = require('pptxgenjs');
 const path = require('path');
 const fs = require('fs');
 
-async function createSingleImagePresentation() {
+async function createPresentation() {
     const pptx = new pptxgen();
-    pptx.layout = 'LAYOUT_16x9';
+    pptx.layout = 'LAYOUT_WIDE'; // 16:9
     pptx.title = 'Jaipur Complete Site Route & Access Analysis';
-    pptx.author = 'Executive Engineering & Leadership';
+    pptx.author = 'Antigravity Geospatial Engine';
 
-    const imgPath = path.resolve(__dirname, 'assets/single_complete_route.jpg');
-    const COLOR_GREEN = '00FF66';
-    const COLOR_CYAN = '00E5FF';
-    const COLOR_GOLD = 'FFD700';
+    const bgImagePath = path.join(__dirname, '../assets/clean_single_complete_route.jpg');
+    const sourceImagePath = path.join(__dirname, '../assets/single_complete_route.jpg');
 
-    //
-
-    // =========================================================================
-    // SLIDE 1: Full-Screen Complete Route Master Slide
-    // =========================================================================
+    // Slide 1: Executive Title & Geospatial Overview
     const slide1 = pptx.addSlide();
-    if (fs.existsSync(imgPath)) {
+    slide1.background = { color: '050811' };
+    
+    // Header Banner
+    slide1.addShape(pptx.ShapeType.rect, {
+        x: 0.5, y: 0.4, w: 12.33, h: 0.9,
+        fill: { color: '0B132B' }, line: { color: '00FF66', width: 1.5 }
+    });
+    slide1.addText('JAIPUR COMPLETE CORRIDOR ACCESS ANALYSIS', {
+        x: 0.8, y: 0.5, w: 8.5, h: 0.4,
+        fontSize: 18, fontFace: 'Arial', bold: true, color: 'FFFFFF'
+    });
+    slide1.addText('📍 Saral Bihari Corridor | Untitled Placemark | Navchetna School | Ring Road Interchange', {
+        x: 0.8, y: 0.9, w: 11.0, h: 0.3,
+        fontSize: 11, fontFace: 'Arial', color: '00E5FF'
+    });
+
+    // Main Satellite Map Image
+    if (fs.existsSync(sourceImagePath)) {
         slide1.addImage({
-            path: imgPath,
-            x: 0, y: 0, w: 13.333, h: 7.5,
-            sizing: { type: 'cover', w: 13.333, h: 7.5 }
+            path: sourceImagePath,
+            x: 0.5, y: 1.5, w: 8.2, h: 5.2,
+            sizing: { type: 'contain', w: 8.2, h: 5.2 }
         });
     }
 
-    // Top HUD Ribbon
+    // Key Corridor Highlights Panel
     slide1.addShape(pptx.ShapeType.roundRect, {
-        x: 0.5, y: 0.4, w: 12.333, h: 0.8,
-        fill: { color: '070B14', transparency: 15 },
-        line: { color: COLOR_GREEN, width: 1.5 },
-        rectRadius: 0.1
+        x: 9.0, y: 1.5, w: 3.8, h: 5.2,
+        fill: { color: '0B132B' }, line: { color: '2A3B5C', width: 1 }, rectRadius: 0.1
+    });
+    
+    slide1.addText('CORRIDOR TELEMETRY', {
+        x: 9.2, y: 1.7, w: 3.4, h: 0.35,
+        fontSize: 13, fontFace: 'Arial', bold: true, color: '00FF66'
     });
 
-    slide1.addText("JAIPUR SITE COMPLETE CORRIDOR ACCESS & HIGHWAY CONNECTIVITY", {
-        x: 0.8, y: 0.45, w: 7.5, h: 0.35,
-        fontSize: 13, bold: true, color: 'FFFFFF', fontFace: 'Calibri'
-    });
-    slide1.addText("📍 GPS: 26°44'10.69\"N, 75°52'21.88\"E  |  JAIPUR RING ROAD (148C / TOLL ROAD)", {
-        x: 0.8, y: 0.8, w: 7.5, h: 0.3,
-        fontSize: 10, bold: true, color: COLOR_CYAN, fontFace: 'Consolas'
-    });
-
-    // Right Floating Intelligence HUD
-    slide1.addShape(pptx.ShapeType.roundRect, {
-        x: 8.8, y: 1.5, w: 4.0, h: 5.4,
-        fill: { color: '0B132B', transparency: 10 },
-        line: { color: COLOR_GREEN, width: 1.5 },
-        rectRadius: 0.15
-    });
-
-    slide1.addText("KEY ROUTE ANNOTATIONS", {
-        x: 9.1, y: 1.7, w: 3.4, h: 0.3,
-        fontSize: 11, bold: true, color: COLOR_GREEN, fontFace: 'Calibri'
-    });
-
-    const points = [
-        "1️⃣ Highway Ingress (West):\nEntry from west road corridor passing Saral Bihari Temple.",
-        "2️⃣ Untitled Placemark Pin:\nCentral survey base at 26°44'10.69\"N, 75°52'21.88\"E.",
-        "3️⃣ North Arm (Mathurawala):\nConnecting north towards Mathurawala sector grid.",
-        "4️⃣ Southbound Corridor Link:\nStraight linear bypass connecting south to Jaipur Ring Road.",
-        "5️⃣ Jaipur Ring Rd (148C / Toll):\nMulti-lane high-speed expressway interchange loop."
+    const highlights = [
+        '🛣️ Highway Ingress: Direct grade access off arterial corridor near Saral Bihari Temple',
+        '📍 Untitled Placemark: Prime development sector pinpointed at 26°44\'10.69"N, 75°52\'21.88"E',
+        '🏫 Educational Landmark: Navchetna Mansik Avm Mook Badhir School terminal junction',
+        '🔄 Multi-Directional: Seamless bi-directional circulation to Balaji Temple & Western Link'
     ];
 
-    slide1.addText(points.join("\n\n"), {
-        x: 9.1, y: 2.1, w: 3.4, h: 4.6,
-        fontSize: 9.5, color: 'F1F5F9', fontFace: 'Calibri', lineSpacing: 13
+    slide1.addText(highlights.join('\n\n'), {
+        x: 9.2, y: 2.2, w: 3.4, h: 4.2,
+        fontSize: 10, fontFace: 'Arial', color: 'E2E8F0', lineSpacing: 18
     });
 
-    const outputPath = path.resolve(__dirname, 'Jaipur_Site_Route_Analysis_Complete.pptx');
-    await pptx.writeFile({ fileName: outputPath });
-    console.log(`Single Complete Image PPTX created successfully at: ${outputPath}`);
+    // Slide 2: High Resolution Clean Satellite Map with Vector Overlays
+    const slide2 = pptx.addSlide();
+    slide2.background = { color: '050811' };
+
+    slide2.addShape(pptx.ShapeType.rect, {
+        x: 0.5, y: 0.4, w: 12.33, h: 0.8,
+        fill: { color: '0B132B' }, line: { color: '00FF66', width: 1.5 }
+    });
+    slide2.addText('MASTER SITE ACCESS & ROUTE NETWORK PLAN', {
+        x: 0.8, y: 0.55, w: 11.0, h: 0.45,
+        fontSize: 16, fontFace: 'Arial', bold: true, color: 'FFFFFF'
+    });
+
+    if (fs.existsSync(bgImagePath)) {
+        slide2.addImage({
+            path: bgImagePath,
+            x: 0.5, y: 1.4, w: 12.33, h: 5.4,
+            sizing: { type: 'contain', w: 12.33, h: 5.4 }
+        });
+    }
+
+    const outFiles = [
+        path.join(__dirname, '../Jaipur_Site_Route_Analysis_Complete.pptx'),
+        path.join(__dirname, '../Jaipur_Site_Route_Analysis_Final.pptx'),
+        path.join(__dirname, '../Jaipur_Site_Route_Analysis.pptx')
+    ];
+
+    for (const outFile of outFiles) {
+        await pptx.writeFile({ fileName: outFile });
+        console.log(`Generated presentation: ${outFile}`);
+    }
 }
 
-createSingleImagePresentation().catch(err => console.error(err));
+createPresentation().catch(console.error);
