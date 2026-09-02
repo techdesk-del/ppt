@@ -546,8 +546,8 @@ html, body {
     }
 }
 
-/* MOBILE LANDSCAPE & PHONES (Max-width: 768px) */
-@media (max-width: 768px) {
+/* TABLETS & IPAD PORTRAIT (Max-width: 900px) */
+@media (max-width: 900px) {
     .spatial-callout {
         transform: translate(-50%, -100%) scale(0.68) !important;
         transform-origin: bottom center;
@@ -569,7 +569,7 @@ html, body {
     }
 
     .callout-coord {
-        display: none !important; /* Hide long coordinates on small mobile screens */
+        display: none !important;
     }
 
     .app-header {
@@ -592,7 +592,7 @@ html, body {
     }
 
     .hdr-center-telemetry {
-        display: none; /* Free up header space on mobile */
+        display: none; /* Free up header space on tablets & mobile */
     }
 
     .hud-btn {
@@ -601,12 +601,7 @@ html, body {
     }
 
     .hud-btn .btn-text {
-        display: none; /* Icon-only buttons for mobile header */
-    }
-
-    .hud-btn .btn-icon {
-        font-size: 14px;
-        margin: 0;
+        display: inline-block;
     }
 
     .cinematic-stage {
@@ -617,11 +612,11 @@ html, body {
         border-radius: 8px;
     }
 
-    /* 2-Row Mobile Touch Dock */
+    /* Clean 2-Row Mobile & iPad Touch Dock */
     .app-footer-dock {
         height: auto;
-        min-height: 56px;
-        padding: 8px 12px;
+        min-height: 64px;
+        padding: 8px 14px;
         padding-bottom: max(8px, env(safe-area-inset-bottom));
     }
 
@@ -629,6 +624,7 @@ html, body {
         flex-wrap: wrap;
         gap: 8px;
         justify-content: space-between;
+        align-items: center;
     }
 
     .dock-playback-group {
@@ -637,33 +633,59 @@ html, body {
     }
 
     .dock-btn {
-        padding: 6px 10px;
-        font-size: 10px;
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .dock-milestones-group {
+        display: none; /* Hide wide chips to keep dock compact */
     }
 
     .dock-tools-group {
         order: 2;
-        gap: 6px;
+        gap: 8px;
     }
 
     .dock-scrubber-group {
         order: 3;
         width: 100%;
         max-width: 100%;
-        margin-top: 2px;
+        margin-top: 4px;
     }
 
     .scrub-label {
-        max-width: 100px;
-        font-size: 9px;
+        max-width: 160px;
+        font-size: 10px;
     }
 
     .pill-btn-group {
-        padding: 2px 4px;
+        padding: 2px 6px;
     }
 
     .sp-btn, .zm-btn {
-        padding: 3px 6px;
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+}
+
+/* SMARTPHONES (Max-width: 600px) */
+@media (max-width: 600px) {
+    .hud-btn .btn-text {
+        display: none; /* Icon only on phones */
+    }
+    .hud-btn .btn-icon {
+        font-size: 13px;
+        margin: 0;
+    }
+    .hdr-main-title {
+        font-size: 10px;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .scrub-label {
+        max-width: 110px;
         font-size: 9px;
     }
 }
