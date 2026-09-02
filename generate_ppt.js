@@ -13,6 +13,8 @@ async function createSingleImagePresentation() {
     const COLOR_CYAN = '00E5FF';
     const COLOR_GOLD = 'FFD700';
 
+    //
+
     // =========================================================================
     // SLIDE 1: Full-Screen Complete Route Master Slide
     // =========================================================================
